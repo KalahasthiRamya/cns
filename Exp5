@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+// Compute modular inverse of a under mod 26
+int modInverse(int a) {
+    for (int i = 1; i < 26; i++) {
+        if ((a * i) % 26 == 1)
+            return i;
+    }
+    return -1; // No inverse (a not coprime with 26)
+}
+
+void affineEncrypt(char *text, int a, int b) {
+    for (int i = 0; text[i]; i++) {
+        if (isalpha(text[i])) {
+            char base = isupper(text[i]) ? 'A' : 'a';
+            text[i] = ((a * (text[i] - base) + b) % 26) + base;
+        }
+    }
+}
+
+void affineDecrypt(char *text, int a, int b) {
+    int a_inv = modInverse(a);
+    if (a_inv == -1) {
+        printf("Invalid 'a' value. No modular inverse exists.\n");
+        return;
+    }
+
+    for (int i = 0; text[i]; i++) {
+        if (isalpha(text[i])) {
+            char base = isupper(text[i]) ? 'A' : 'a';
+            int decrypted = (a_inv * ((text[i] - base - b + 26)) % 26);
+            text[i] = decrypted + base;
+        }
+    }
+}
+
+int main() {
+    char text[100];
+    int a, b, choice;
+
+    printf("Enter text: ");
+    fgets(text, sizeof(text), stdin);
+    text[strcspn(text, "\n")] = '\0';
+
+    printf("Enter 'a' (must be coprime with 26): ");
+    scanf("%d", &a);
+    printf("Enter 'b' (0-25): ");
+    scanf("%d", &b);
+
+    printf("Choose 1 to Encrypt, 2 to Decrypt: ");
+    scanf("%d", &choice);
+
+    if (choice == 1)
+        affineEncrypt(text, a, b);
+    else
+        affineDecrypt(text, a, b);
+
+    printf("Result: %s\n", text);
+
+    return 0;
+}
