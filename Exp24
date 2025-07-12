@@ -1,0 +1,23 @@
+int extended_gcd(int a, int b, int *x, int *y) {
+    if (a == 0) {
+        *x = 0; *y = 1;
+        return b;
+    }
+    int x1, y1;
+    int gcd = extended_gcd(b % a, a, &x1, &y1);
+    *x = y1 - (b/a)*x1;
+    *y = x1;
+    return gcd;
+}
+
+int main_rsa_key() {
+    int n = 3599;
+    int e = 31;
+    int p = 59, q = 61;  // Trial error
+    int phi = (p-1)*(q-1);
+    int x, y;
+    extended_gcd(e, phi, &x, &y);
+    int d = (x % phi + phi) % phi;
+    printf("Private key d: %d\n\n", d);
+    return 0;
+}
