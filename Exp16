@@ -1,0 +1,47 @@
+char *freq_order = "ETAOINSHRDLCUMWFGYPBVKJXQZ";
+
+void analyze_and_decrypt(char *ciphertext) {
+    int freq[26] = {0};
+    char mapping[26] = {0};
+    int total = strlen(ciphertext);
+
+    for (int i = 0; i < total; i++) {
+        if (isalpha(ciphertext[i])) {
+            freq[toupper(ciphertext[i]) - 'A']++;
+        }
+    }
+
+    int sorted[26];
+    for (int i = 0; i < 26; i++) sorted[i] = i;
+
+    for (int i = 0; i < 25; i++) {
+        for (int j = i + 1; j < 26; j++) {
+            if (freq[sorted[j]] > freq[sorted[i]]) {
+                int tmp = sorted[i];
+                sorted[i] = sorted[j];
+                sorted[j] = tmp;
+            }
+        }
+    }
+
+    for (int i = 0; i < 26; i++) {
+        mapping[sorted[i]] = freq_order[i];
+    }
+
+    printf("Decryption attempt: \n");
+    for (int i = 0; i < total; i++) {
+        if (isalpha(ciphertext[i])) {
+            char c = toupper(ciphertext[i]);
+            printf("%c", mapping[c - 'A']);
+        } else {
+            printf("%c", ciphertext[i]);
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    char *ciphertext = "ZIT JXOEA WKGVF YGB PXDHL GCTK ZIT SQMN RGU";
+    analyze_and_decrypt(ciphertext);
+    return 0;
+}
