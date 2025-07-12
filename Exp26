@@ -1,0 +1,12 @@
+// 26. RSA key regeneration
+void explain_key_leak() {
+    printf("If Bob leaks private key d, changing e isn't enough.\n");
+    printf("Anyone who saw d can still decrypt. Must generate new p, q (new modulus n).\n");
+}
+
+int main_explanations() {
+    explain_padding();
+    explain_common_factor();
+    explain_key_leak();
+    return 0;
+}
