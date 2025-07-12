@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdint.h>
+
+void leftShift(uint8_t *block, int len) {
+    uint8_t carry = 0;
+    for (int i = len - 1; i >= 0; --i) {
+        uint8_t next = block[i] >> 7;
+        block[i] = (block[i] << 1) | carry;
+        carry = next;
+    }
+}
+
+void xorR(uint8_t *block, int len, int block_size) {
+    if (block_size == 128) block[len - 1] ^= 0x87;
+    else if (block_size == 64) block[len - 1] ^= 0x1B;
+}
+
+int main() {
+    uint8_t L[16] = {0x6A, 0x7B, 0x34}; // result of AES(0)
+    leftShift(L, 16);
+    xorR(L, 16, 128);
+    printf("K1: ");
+    for (int i = 0; i < 16; ++i)
+        printf("%02X ", L[i]);
+    printf("\n");
+    return 0;
+}
