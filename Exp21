@@ -1,0 +1,4 @@
+void explain_padding() {
+    printf("Padding even a complete block prevents padding oracle attacks and ensures consistent structure.\n");
+    printf("It avoids ambiguity about whether the last block was padded or not.\n\n");
+}
