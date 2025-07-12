@@ -1,0 +1,22 @@
+int modexp_dh(int base, int exp, int mod) {
+    long long result = 1;
+    for (int i = 0; i < exp; i++)
+        result = (result * base) % mod;
+    return result;
+}
+
+int main() {
+    int q = 23, a = 5;
+    int xa = 6; // Alice's secret
+    int xb = 15; // Bob's secret
+
+    int ya = modexp_dh(a, xa, q);
+    int yb = modexp_dh(a, xb, q);
+
+    int ka = modexp_dh(yb, xa, q);
+    int kb = modexp_dh(ya, xb, q);
+
+    printf("Alice's key: %d\n", ka);
+    printf("Bob's key: %d\n", kb);
+    return 0;
+}
