@@ -1,0 +1,5 @@
+#include <stdio.h>
+int main() {
+    printf("Padding even when not needed prevents padding oracle attacks and standardizes message lengths.\n");
+    return 0;
+}
