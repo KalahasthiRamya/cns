@@ -1,0 +1,7 @@
+#include <stdio.h>
+/* This program only explains the implication of k's randomness in DSA signatures */
+int main() {
+    printf("In DSA, if k is reused or predictable, the private key can be derived.\n");
+    printf("This differs from RSA where the same message always yields the same signature.\n");
+    return 0;
+}
