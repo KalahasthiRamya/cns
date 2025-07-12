@@ -1,0 +1,15 @@
+#include <stdio.h>
+char affineEncryptChar(char ch, int a, int b) {
+    return ((a * (ch - 'a') + b) % 26) + 'a';
+}
+void affineEncrypt(const char *plain, char *cipher, int a, int b) {
+    for (int i = 0; plain[i]; i++)
+        cipher[i] = affineEncryptChar(plain[i], a, b);
+    cipher[strlen(plain)] = '\0';
+}
+int main() {
+    char plain[] = "hello", cipher[100];
+    affineEncrypt(plain, cipher, 5, 8);
+    printf("Encrypted: %s\n", cipher);
+    return 0;
+}
