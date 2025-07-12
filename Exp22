@@ -1,0 +1,33 @@
+uint8_t sdes_encrypt(uint8_t data, uint8_t key) {
+    return data ^ key;  // Simulate S-DES with XOR
+}
+
+void cbc_encrypt(uint8_t *plaintext, uint8_t *ciphertext, int len, uint8_t key, uint8_t iv) {
+    uint8_t prev = iv;
+    for (int i = 0; i < len; i++) {
+        ciphertext[i] = sdes_encrypt(plaintext[i] ^ prev, key);
+        prev = ciphertext[i];
+    }
+}
+
+void cbc_decrypt(uint8_t *ciphertext, uint8_t *decrypted, int len, uint8_t key, uint8_t iv) {
+    uint8_t prev = iv;
+    for (int i = 0; i < len; i++) {
+        decrypted[i] = sdes_encrypt(ciphertext[i], key) ^ prev;
+        prev = ciphertext[i];
+    }
+}
+
+int main() {
+    uint8_t pt[] = {0x01, 0x23};
+    uint8_t key = 0xFD;
+    uint8_t iv = 0xAA;
+    uint8_t ct[2], dt[2];
+
+    cbc_encrypt(pt, ct, 2, key, iv);
+    printf("CBC Encrypted: %02X %02X\n", ct[0], ct[1]);
+
+    cbc_decrypt(ct, dt, 2, key, iv);
+    printf("CBC Decrypted: %02X %02X\n\n", dt[0], dt[1]);
+    return 0;
+}
