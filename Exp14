@@ -1,0 +1,33 @@
+// 14a. One-time Pad (Vigenere with random key)
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char *plaintext = "sendmoremoney";
+    int key[] = {9,0,1,7,23,15,21,14,11,11,2,8,9};
+    char ciphertext[20];
+    for (int i = 0; i < strlen(plaintext); i++) {
+        int p = plaintext[i] - 'a';
+        int c = (p + key[i]) % 26;
+        ciphertext[i] = 'A' + c;
+    }
+    ciphertext[strlen(plaintext)] = '\0';
+    printf("Ciphertext: %s\n", ciphertext);
+    return 0;
+}
+
+// 14b. Find key to decrypt to "cashnotneeded"
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char *plaintext = "cashnotneeded";
+    char *ciphertext = "BEOPJDBZZMAHE"; // From 14a result
+    int key[20];
+    for (int i = 0; i < strlen(plaintext); i++) {
+        key[i] = ((ciphertext[i] - 'A') - (plaintext[i] - 'a') + 26) % 26;
+        printf("%d ", key[i]);
+    }
+    printf("\n");
+    return 0;
+}
