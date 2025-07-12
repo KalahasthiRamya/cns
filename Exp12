@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+// 2×2 Hill Cipher with key [9 4; 5 7]
+int key[2][2] = {{9, 4}, {5, 7}};
+int det = 9*7 - 4*5; // =63 - 20 = 43 ≡ 17 mod26
+int det_inv; // modular inverse of 17 mod 26 = 23 (since 17*23 = 391 ≡ 1)
+
+int mod26(int x) {
+    x %= 26;
+    return x < 0 ? x + 26 : x;
+}
+
+void process(char *input, char *output, int mode) {
+    int invK[2][2];
+    if (mode == 0) { // compute inverse key for decryption
+        det_inv = 23; // precomputed
+        invK[0][0] =  mod26( det_inv * 7);
+        invK[0][1] = mod26(-det_inv * 4);
+        invK[1][0] = mod26(-det_inv * 5);
+        invK[1][1] = mod26( det_inv * 9);
+    }
+
+    for (int i = 0; i < (int)strlen(input); i += 2) {
+        int p0 = toupper(input[i]) - 'A';
+        int p1 = (i+1 < (int)strlen(input) ? toupper(input[i+1]) - 'A' : 'X' - 'A');
+        int c0 = (mode ? key[0][0]*p0 + key[0][1]*p1 : invK[0][0]*p0 + invK[0][1]*p1);
+        int c1 = (mode ? key[1][0]*p0 + key[1][1]*p1 : invK[1][0]*p0 + invK[1][1]*p1);
+        output[i]   = 'A' + mod26(c0);
+        output[i+1] = 'A' + mod26(c1);
+    }
+    output[strlen(input)] = '\0';
+}
+
+int main() {
+    char plaintext[] =
+      "meetmeattheusualplaceattenratherthaneightoclock";
+    char ciphertext[200], decrypted[200];
+
+    // Ensure even-length
+    if (strlen(plaintext) % 2) {
+        strcat(plaintext, "X");
+    }
+
+    process(plaintext, ciphertext, 1);
+    printf("Ciphertext: %s\n", ciphertext);
+
+    process(ciphertext, decrypted, 0);
+    printf("Decrypted:  %s\n", decrypted);
+
+    return 0;
+}
