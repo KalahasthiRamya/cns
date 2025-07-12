@@ -1,0 +1,17 @@
+void explain_common_factor() {
+    printf("If plaintext shares a factor with n = pq, computing gcd(plaintext, n) can reveal p or q.\n");
+    printf("This breaks RSA by factorization.\n\n");
+}
+
+// 26. RSA key regeneration
+void explain_key_leak() {
+    printf("If Bob leaks private key d, changing e isn't enough.\n");
+    printf("Anyone who saw d can still decrypt. Must generate new p, q (new modulus n).\n");
+}
+
+int main_explanations() {
+    explain_padding();
+    explain_common_factor();
+    explain_key_leak();
+    return 0;
+}
