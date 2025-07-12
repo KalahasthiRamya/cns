@@ -1,0 +1,5 @@
+#include <stdio.h>
+int main() {
+    printf("Use statistical analysis on letter frequency to derive substitution mapping automatically.\n");
+    return 0;
+}
