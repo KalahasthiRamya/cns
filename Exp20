@@ -1,0 +1,9 @@
+void explain_ecb_cbc_error() {
+    printf("20a. In CBC, an error in C1 affects only P1 and P2. Blocks beyond P2 are unaffected.\n");
+    printf("20b. If there's a bit error in plaintext P1, it affects only C1. On decryption, only P1 is corrupted.\n\n");
+}
+
+int main() {
+    explain_ecb_cbc_error();
+    return 0;
+}
