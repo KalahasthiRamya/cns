@@ -1,0 +1,15 @@
+#include <stdio.h>
+#include <string.h>
+void encryptOTP(const char *plain, int key[], char *cipher) {
+    for (int i = 0; plain[i]; i++)
+        cipher[i] = ((plain[i] - 'a' + key[i]) % 26) + 'a';
+    cipher[strlen(plain)] = '\0';
+}
+int main() {
+    char plain[] = "sendmoremoney";
+    int key[] = {9, 0, 1, 7, 23, 15, 21, 14, 11, 11, 2, 8, 9};
+    char cipher[50];
+    encryptOTP(plain, key, cipher);
+    printf("Encrypted: %s\n", cipher);
+    return 0;
+}
