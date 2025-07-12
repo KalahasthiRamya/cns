@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+char matrix[5][5];
+
+void prepareKeyMatrix(char *key) {
+    int used[26] = {0}, k = 0;
+    for (int i = 0; key[i]; i++) {
+        if (key[i] == 'j') key[i] = 'i';
+        if (isalpha(key[i])) {
+            int idx = tolower(key[i]) - 'a';
+            if (!used[idx]) {
+                used[idx] = 1;
+                matrix[k / 5][k % 5] = tolower(key[i]);
+                k++;
+            }
+        }
+    }
+    for (int i = 0; i < 26; i++) {
+        if (i == ('j' - 'a')) continue;
+        if (!used[i]) {
+            matrix[k / 5][k % 5] = 'a' + i;
+            k++;
+        }
+    }
+}
+
+void findPosition(char ch, int *row, int *col) {
+    if (ch == 'j') ch = 'i';
+    for (int i = 0; i < 5; i++)
+        for (int j = 0; j < 5; j++)
+            if (matrix[i][j] == ch) {
+                *row = i;
+                *col = j;
+                return;
+            }
+}
+
+void encryptPlayfair(char *text) {
+    char result[100];
+    int len = 0;
+    for (int i = 0; text[i]; i++) {
+        if (!isalpha(text[i])) continue;
+        text[len++] = tolower(text[i] == 'j' ? 'i' : text[i]);
+    }
+    text[len] = '\0';
+
+    for (int i = 0; i < len; i += 2) {
+        if (i + 1 == len || text[i] == text[i + 1])
+            memmove(&text[i + 1], &text[i], len - i + 1), text[i + 1] = 'x', len++;
+    }
+
+    printf("Encrypted: ");
+    for (int i = 0; i < len; i += 2) {
+        int r1, c1, r2, c2;
+        findPosition(text[i], &r1, &c1);
+        findPosition(text[i + 1], &r2, &c2);
+
+        if (r1 == r2)
+            printf("%c%c", matrix[r1][(c1 + 1) % 5], matrix[r2][(c2 + 1) % 5]);
+        else if (c1 == c2)
+            printf("%c%c", matrix[(r1 + 1) % 5][c1], matrix[(r2 + 1) % 5][c2]);
+        else
+            printf("%c%c", matrix[r1][c2], matrix[r2][c1]);
+    }
+    printf("\n");
+}
+
+int main() {
+    char key[50], plaintext[100];
+    printf("Enter keyword: ");
+    scanf("%s", key);
+    getchar(); // consume newline
+
+    printf("Enter plaintext: ");
+    fgets(plaintext, sizeof(plaintext), stdin);
+    plaintext[strcspn(plaintext, "\n")] = '\0';
+
+    prepareKeyMatrix(key);
+    encryptPlayfair(plaintext);
+    return 0;
+}
