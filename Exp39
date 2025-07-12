@@ -1,0 +1,5 @@
+#include <stdio.h>
+int main() {
+    printf("Frequency attack on additive cipher: Test each shift for max match with English frequency.\n");
+    return 0;
+}
