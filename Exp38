@@ -1,0 +1,5 @@
+#include <stdio.h>
+int main() {
+    printf("With enough plaintext-ciphertext pairs, matrix inversion allows full key recovery in Hill cipher.\n");
+    return 0;
+}
